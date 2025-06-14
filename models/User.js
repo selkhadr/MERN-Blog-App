@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
+const joi = require("joi");
 
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
         minlength: 2,
         maxlength: 100,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
         minlength: 5,
         maxlength: 100,
@@ -18,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: true,
+        required: true,
         trim: true,
         minlength: 8,
     },
@@ -42,4 +43,14 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
-module.exports={User}
+function validateRegisterUser(obj){
+    const schema = joi.object({
+        username: joi.string().trim().min(2).max(100).required(),
+        email: joi.string().trim().min(5).max(100).required().email(),
+        password: joi.string().trim().min(8).required(),
+
+    });
+    return schema.validate(obj);
+}
+
+module.exports={User, validateRegisterUser}
