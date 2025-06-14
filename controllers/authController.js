@@ -39,7 +39,6 @@ module.exports.registerUserCtrl = asyncHandler(async(req, res)=>{
  * @access public
  */
 module.exports.loginUserCtrl = asyncHandler(async(req, res)=>{
-    console.log(req.body);
     const {error} = validateLoginUser(req.body);
     if (error){
         return res.status(400).json({message: error.details[0].message});
